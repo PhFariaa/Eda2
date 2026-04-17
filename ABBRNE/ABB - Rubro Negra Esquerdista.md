@@ -49,65 +49,102 @@ Condições para correção:<br>
 
 
 ``` 
-    celula *insere (celula *raiz, int x){
-        raiz = *insere_abbrne(raiz, x);
-        raiz->cor = PRETO;          // a raiz é preta indepentemente se em algum momento for vermelha por conta das correções, assim,
-        return raiz;               // se em algum momento a operação sobe_cor for realizada na raiz, significa que a altura negra aumentou
-    }
+   #include <stdio.h>
+#include <stdlib.h>
 
+#define PRETO 0
+#define VERMELHO 1
 
-    celula *insere_abbrne (celula *raiz, int x){
-        if (raiz != null){
-            if (x < raiz->dado){
-                raiz->esq = insere_abbrne(raiz->esq, x); 
-            }
-            else if (x > raiz-> dado){
-                raiz->dir = insere_abbrne (raiz->dir, x);
-            }
-            if (ehPreto(raiz->esq) && ehVerm(raiz->dir)){
-                raiz = rotação_a_esquerda(raiz);
-            }
-            if (ehPreto(raiz) && ehVerm(raiz->esq) && ehVerm(raiz -> esq -> esq)){
-                raiz = rotacao_a_direita(raiz);
-            }
-            if (ehPreto(raiz) && ehVerm(raiz->esq) && ehVerm(raiz->dir)){
-                sobe_cor(raiz);
-            }
-            return raiz; 
+typedef struct celula {
+    int dado;
+    int cor;
+    struct celula *esq;
+    struct celula *dir;
+} celula;
+
+int main() {
+    celula *raiz = NULL;
+
+    raiz = insere(raiz, 10);
+    raiz = insere(raiz, 20);
+    raiz = insere(raiz, 5);
+
+    printf("Raiz: %d\n", raiz->dado);
+    printf("Cor da raiz: %d\n", raiz->cor);
+
+    return 0;
+}
+
+celula *rotacao_a_esquerda(celula *raiz) {
+    celula *a = raiz->dir;
+    a->cor = raiz->cor;
+    raiz->cor = VERMELHO;
+    celula *beta = a->esq;
+    a->esq = raiz;
+    raiz->dir = beta;
+    return a;
+}
+
+celula *rotacao_a_direita(celula *raiz) {
+    celula *a = raiz->esq;
+    a->cor = raiz->cor;
+    raiz->cor = VERMELHO;
+    celula *beta = a->dir;
+    a->dir = raiz;
+    raiz->esq = beta;
+    return a;
+}
+
+void sobe_cor(celula *raiz) {
+    raiz->cor = VERMELHO;
+    raiz->esq->cor = PRETO;
+    raiz->dir->cor = PRETO;
+}
+
+int ehPreto(celula *raiz) {
+    return raiz == NULL || raiz->cor == PRETO;
+}
+
+int ehVerm(celula *raiz) {
+    return raiz != NULL && raiz->cor == VERMELHO;
+}
+
+celula *insere_abbrne(celula *raiz, int x) {
+    if (raiz != NULL) {
+        if (x < raiz->dado) {
+            raiz->esq = insere_abbrne(raiz->esq, x);
+        } else if (x > raiz->dado) {
+            raiz->dir = insere_abbrne(raiz->dir, x);
         }
-        else{
-            celula *novo = malloc(sizeof(celula));
-            novo->esq = novo->dir = null;
-            novo->dado = x;
-            novo->cor = VERMELHO;
-            return novo; 
+
+        if (ehPreto(raiz->esq) && ehVerm(raiz->dir)) {
+            raiz = rotacao_a_esquerda(raiz);
+        }
+        if (ehVerm(raiz->esq) && ehVerm(raiz->esq->esq)) {
+            raiz = rotacao_a_direita(raiz);
+        }
+        if (ehVerm(raiz->esq) && ehVerm(raiz->dir)) {
+            sobe_cor(raiz);
         }
 
-
-    celula *rotacao_a_esquerda(celula *raiz){
-        celula *a = raiz->dir;
-        a->cor = raiz->cor;
-        raiz->cor = VERMELHO;
-        celula *beta = a->esq;
-        a->esq = raiz;
-        raiz->dir = beta;
-        return a;
+        return raiz;
+    } else {
+        celula *novo = malloc(sizeof(celula));
+        novo->esq = NULL;
+        novo->dir = NULL;
+        novo->dado = x;
+        novo->cor = VERMELHO;
+        return novo;
     }
+}
 
-    void *sobe_cor(celula *raiz){
-        raiz->cor = VERMELHO;
-        raiz->esq->cor = raiz->dir->cor = PRETO;
+celula *insere(celula *raiz, int x) {
+    raiz = insere_abbrne(raiz, x);
+    if (raiz != NULL) {
+        raiz->cor = PRETO;
     }
-
-    celula *rotacao_a_direita(celula *raiz){
-        celula *a = raiz->esq;
-        a->cor = raiz->cor;
-        raiz->cor = VERMELHO;
-        celula *beta = a->dir;
-        a->dir = raiz;
-        raiz->esq = beta;
-        return a;
-    }
+    return raiz;
+}
 ```
 Obs: Todas as correções de uma ABB RNE custam O(1)
 
