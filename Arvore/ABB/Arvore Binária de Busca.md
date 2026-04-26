@@ -13,9 +13,13 @@ Inserção:
 - A inserção começa com uma busca, eventualmente ou o valor vai ser encontrado ou o algoritmo chegará à folha, inserindo o valor na posição adequada.
 Remoção:
 - O processo de remoção costuma ser algo mais complexo, no caso de uma ABB devemos verificar algumas condições. Se o nó for folha, basta remove-lo. Se o nó tiver somente um filho, o filho assume a posição do pai, Exemplo:
-  ![[Pasted image 20260426154217.png]]
+
+  ![Exemplo](Remocao_um_filho.png)
+  
   Caso o nó tenha dois filhos ai temos duas opções de operar, obtendo o sucessor ou o antecessor do nó na árvore, sendo o antecessor o maior valor da subárvore esquerda e o sucessor o menor valor da subárvore direita, assim que obtivermos o antecessor ou o sucessor, então os nós devem ser trocados de lugar para que o nó original possa ser removido sem alterar a propriedade de busca da árvore. Exemplo:
-  ![[Pasted image 20260426154501.png]]
+  
+  ![Exemplo](Remocao_dois_filhos.png)
+  
   No exemplo acima, o nó de valor 30 está para ser removido, e possui como sucessor imediato o valor 35 (nó mais à esquerda da sua sub-árvore direita). Assim sendo, na exclusão, o valor 35 será promovido no lugar do nó a ser excluído, enquanto a sua sub-árvore (direita) será promovida para sub-árvore esquerda do 40, como pode ser visto na figura.
 
 ##### Percusos
@@ -24,7 +28,9 @@ Em uma ABB pode-se fazer 3 percursos, são eles: pré-order, in-order e pos-orde
 - In-order: esquerda, raiz, direita
 - Pós-order: esquerda, direita, raiz
 Exemplo:
-![[Pasted image 20260426155127.png]]
+
+![Exemplo](Arvore_exemplo.png)
+
 Utilizando essa árvore, teríamos:
 Pré-order => 8, 3, 1, 6, 4, 7, 10, 14, 13
 
