@@ -1,4 +1,6 @@
 
+## Árvore Binária de Busca
+
 Uma árvore binária é uma estrutura em que o nó pai tem, no máximo, dois filhos, o filho esquerdo e o filho direito. Uma árvore binária de busca é uma árvore binária em que os menores elementos ficam à esquerda e os maiores elementos ficam à direita, tornando assim a busca mais simples de ser feita.
 
 ##### Complexidade
